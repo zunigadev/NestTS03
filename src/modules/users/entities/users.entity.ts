@@ -15,7 +15,7 @@ export class User {
   pass: string;
 
   @Column()
-  edad: number;
+  age: number;
 
   @Column({ default: true })
   isActive: boolean;
