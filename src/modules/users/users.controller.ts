@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -16,19 +16,16 @@ export class UsersController {
         return this.usersService.findAll()
     }
 
-    /*
+    
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id:number) {
-        return this.usersService.findOne(+id)
+        return this.usersService.findOne(id)
     }
-    */
+    
 
-    @Get(':id')
-    async findOne(
-        @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
-         id: number,
-    ) {
-        return this.usersService.findOne(id);
+    @Delete(':id')
+    remove(@Param('id', ParseIntPipe) id:number) {
+        return this.usersService.remove(id)
     }
     
 }
