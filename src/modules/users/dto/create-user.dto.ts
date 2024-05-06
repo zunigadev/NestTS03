@@ -2,7 +2,7 @@ import { IsBoolean, IsInt, IsNotEmpty, IsString, Max } from "class-validator";
 
 export class CreateUserDto {
 
-    //id: number;
+    id: number;
 
     @IsString()
     @IsNotEmpty()

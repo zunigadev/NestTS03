@@ -38,6 +38,10 @@ export class UsersService {
   //Actualizar usuario
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOneBy({ id })
+    const userData = this.userRepository.merge(
+      user,
+      updateUserDto,
+    );
     //Condicional de existencia de usuario
     if (!user) { 
       throw new HttpException(
@@ -45,7 +49,7 @@ export class UsersService {
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.userRepository.save({...user,...updateUserDto });
+    return this.userRepository.save(userData);
   }
 
 
