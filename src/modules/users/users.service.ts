@@ -12,27 +12,30 @@ export class UsersService {
   ) {}
 
   //Crea un nuevo usuario
-  create(createUserDto: CreateUserDto) {
-    console.log('Usuario resgistrado exitosamente')
-    return this.userRepository.save(createUserDto);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      return await this.userRepository.save(createUserDto);
+    } catch (error) {
+      throw new HttpException('Error al crear usuario', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   //Muestra todos los usuarios
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<User[]> {
+    try {
+      return await this.userRepository.find();
+    } catch (error) {
+      throw new HttpException('Error al recuperar usuarios', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   //Muestra usuario por ID
   async findOne(id: number): Promise<User | null> {
-    const user = await this.userRepository.findOneBy({ id })
-    //Condicional de existencia de usuario
-    if (!user) { 
-      throw new HttpException(
-        'Usuario inexistente',
-        404,
-      );
+    try {
+      return await this.userRepository.findOneBy({id});
+    } catch (error) {
+      throw new HttpException('Error al recuperar usuario', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return user
   }
 
   //Actualizar usuario
@@ -50,6 +53,19 @@ export class UsersService {
       );
     }
     return this.userRepository.save(userData);
+  }
+
+  //Eliminación Logica
+  async changeStatus(id: number, updateUserDto: UpdateUserDto):Promise<User> {
+    try{
+      const user = await this.userRepository.findOneBy({ id })
+      const userData = this.userRepository.merge(user,updateUserDto);
+      return this.userRepository.save(userData);
+
+    } catch (error) {
+      throw new HttpException('Error al actualizar estado', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
   }
 
 

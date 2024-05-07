@@ -1,8 +1,10 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsString, Max } from "class-validator";
+import {IsDateString, IsEmail, IsNotEmpty, IsString, Max } from "class-validator";
 
 export class CreateUserDto {
-
-    id: number;
+    
+    @IsEmail()
+    @IsNotEmpty()
+    mail: string;
 
     @IsString()
     @IsNotEmpty()
@@ -16,11 +18,8 @@ export class CreateUserDto {
     @IsNotEmpty()
     pass: string;
 
-    @IsInt()
-    @Max(200)
+    @IsDateString()
     @IsNotEmpty()
-    age: number;
+    dateOfBirth: Date;
 
-    @IsBoolean()
-    isActive: boolean;
 }
